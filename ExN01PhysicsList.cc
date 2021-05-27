@@ -182,10 +182,23 @@ void ExN01PhysicsList::ConstructEM()
 */
 // low EM model
 
+/*
 #include "G4LowEnergyCompton.hh"
 #include "G4LowEnergyGammaConversion.hh"
 #include "G4LowEnergyPhotoElectric.hh"
 #include "G4LowEnergyRayleigh.hh"
+*/
+#include "G4PhotoElectricEffect.hh"
+#include "G4LivermorePhotoElectricModel.hh"
+#include "G4ComptonScattering.hh"
+#include "G4LivermoreComptonModel.hh"
+#include "G4GammaConversion.hh"
+#include "G4LivermoreGammaConversionModel.hh"
+#include "G4RayleighScattering.hh" 
+#include "G4LivermoreRayleighModel.hh"
+
+
+
 
 // e+
 #include "G4eMultipleScattering.hh"
@@ -217,9 +230,9 @@ void ExN01PhysicsList::ConstructEM()
 
     if (particleName == "gamma") {
       // gamma
-       pmanager->AddDiscreteProcess(new G4LowEnergyCompton);
+       pmanager->AddDiscreteProcess(new G4LivermoreComptonModel);
      
-      LePeprocess = new G4LowEnergyPhotoElectric();
+      LePeprocess = new G4LivermorePhotoElectricModel();
 
       LePeprocess->ActivateAuger(true);
       LePeprocess->SetCutForLowEnSecPhotons(0.250 * keV);
@@ -227,7 +240,7 @@ void ExN01PhysicsList::ConstructEM()
 
       pmanager->AddDiscreteProcess(LePeprocess);
 
-      pmanager->AddDiscreteProcess(new G4LowEnergyRayleigh("Rayleigh"));
+      pmanager->AddDiscreteProcess(new G4LivermoreRayleighModel("Rayleigh"));
 
 
     } else if (particleName == "e-") {
